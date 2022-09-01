@@ -34,13 +34,13 @@ public class Solution_5215_김정효 {
 				arr[i][1] = Integer.parseInt(st.nextToken());	// cal
 			}
 			
-			comb(0, 0, 0);
+			subset(0, 0, 0);
 			sb.append("#").append(tc).append(" ").append(_max).append("\n");
 		}
 		System.out.println(sb);
 	}
 
-	private static void comb(int index, int cal, int score) {
+	private static void subset(int index, int cal, int score) {
 		if(cal > l) {
 			return;
 		}
@@ -51,8 +51,8 @@ public class Solution_5215_김정효 {
 		}
 		
 		visit[index] = true;	// 선택
-		comb(index+1, cal+arr[index][1], score+arr[index][0]);
+		subset(index+1, cal+arr[index][1], score+arr[index][0]);
 		visit[index] = false;	// 미선택
-		comb(index+1, cal, score);	// 미선택이므로 칼로리, 점수는 그대로
+		subset(index+1, cal, score);	// 미선택이므로 칼로리, 점수는 그대로
 	}
 }
