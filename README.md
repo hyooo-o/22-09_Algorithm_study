@@ -1,4 +1,4 @@
-# Algorithm_study
+# :pushpin: Algorithm_study
 
 ### [1주차] 22.09.01~22.09.04
 ***
