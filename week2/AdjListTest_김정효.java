@@ -1,6 +1,6 @@
 import java.util.Scanner;
 // 인접리스트 탐색 DFS
-public class AdjListTEst {
+public class AdjListTEst_김정효 {
 
 	static class Node{
 		int to;
