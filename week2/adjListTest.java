@@ -38,13 +38,11 @@ public class AdjListTEst {
 		visited[cur] = true;
 		System.out.print((char)(cur+'A'));
 		
-		// 현 정점의 인접정점들을 큐에 넣어 차후 탐색하도록 만들기
+		// 현 정점의 인접정점들을 큐에 넣어 차후 탐색하도록 만듦
 		for (Node temp = adjList[cur]; temp!= null; temp = temp.next) {
 			if(!visited[temp.to]) {	// 방문 X
 				dfs(temp.to);
 			}
 		}
-		
 	}
-
 }
