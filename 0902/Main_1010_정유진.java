@@ -15,7 +15,7 @@ public class Main_1010_정유진 {
 
 		sc.close();
 	}
-
+	
 	static int comb1(int a, int b){
 		if(arr[a][b]>0){
 			return arr[a][b];
