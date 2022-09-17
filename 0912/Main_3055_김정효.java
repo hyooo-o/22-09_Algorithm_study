@@ -17,17 +17,14 @@ import java.util.StringTokenizer;
  * <출력>
  * - 고슴도치가 비버의 굴로 이동하기 위해 필요한 최소 시간
  * - 이동할 수 없다면, "KAKTUS"를 출력
- * 
- * <방법>
- * 1. 물을 먼저 이동시킨 후, 고슴도치 이동 (고슴도치는 물이 찰 예정인 곳에 이동 못하기 때문)
- * 2. 고슴도치는 이동 시, 자신이 있었던 자리를 '.'로 바꾸고, 자신의 이동거리를 더하면서 이동
  * @author kjh
  *
  */
 public class Main_3055_김정효 {
-	static int r, c;
+	static int r, c, _min;
 	static char map[][];
-	static Queue<Integer> water = new LinkedList<>();
+	static Queue<int[]> water = new LinkedList<>();
+	static Queue<int[]> animal = new LinkedList<>();
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -35,83 +32,69 @@ public class Main_3055_김정효 {
 		r = Integer.parseInt(st.nextToken());
 		c = Integer.parseInt(st.nextToken());
 		map = new char[r][c];
-		
-		for (int i = 0; i < r; i++) {
-			String str = br.readLine();
-			map[i]  = str.toCharArray();
-		}
-		
-		int start = 0;
-		int end = 0;
+		_min = Integer.MAX_VALUE;
 		
 		for (int i = 0; i <r; i++) {
+			String str = br.readLine();
 			for (int j = 0; j < c; j++) {
-				if (map[i][j] == 'D') {
-					start = i;
-					end = j;
+				map[i][j] = str.charAt(j);
+				
+				if (map[i][j] == 'S') {
+					animal.add(new int[] {i, j, 0});
 				}else if (map[i][j] == '*') {
-					water.add(i);
-					water.add(j);
+					water.add(new int[] {i, j});
 				}
 			}
 		}
 		
-		dfs(start, end, 0);
-		
+		bfs();
+		System.out.println(_min == Integer.MAX_VALUE? "KAKTUS": _min);		// 이동할 수 없다면, "KAKTUS"   도착했다면, 최소 이동 거리 출력
 	}
 	
-	private static void dfs(int x, int y, int cnt) {
-		
+	private static void bfs() {
 		int[] dx = {-1, 1, 0, 0};
 		int[] dy = {0, 0, -1, 1};
 		
-		while (true) {
-			for (int k = 0; k < water.size(); k++) {
-				// 1. 물 이동
-				if ( !w(water.indexOf(k), water.indexOf(++k)) ) {	// 고슴도치 만나면 종료
-					break;
-				}
-				
+		while (!animal.isEmpty()) {
+			// 1. 물 이동
+			int len = water.size();
+			for (int k = 0; k < len; k++) {
+				int[] w = water.poll();
+				int x = w[0];
+				int y = w[1];
 				for (int i = 0; i < 4; i++) {
 					int nx = x + dx[i];
 					int ny = y + dy[i];
-					if (nx>0 && ny>0 && nx<r && ny<c) {
-						// 2. 고슴도치 이동
-						if (map[nx][ny] == '.') {	// 2-1. '.' 일 때만 이동
-							dfs(nx, ny, cnt+1);
+					if (nx>=0 && ny>=0 && nx<r && ny<c) {
+						if (map[nx][ny] == '.') {	// 비어있으면 물 확장
+							map[nx][ny] = '*';
+							water.add(new int[] {nx, ny});
 						}
-						
-						
-						// 2-2. S 도착 시, while문 탈출
 					}
 				}
+			}		
 				
-			}
-		}
-			
-			
-			
-		
-	}
-
-	private static boolean w(int x, int y) {
-		int[] dx = {-1, 1, 0, 0};
-		int[] dy = {0, 0, -1, 1};
-		
-		for (int i = 0; i < 4; i++) {
-			int nx = x + dx[i];
-			int ny = y + dy[i];
-			if (nx>0 && ny>0 && nx<r && ny<c) {
-				if (map[nx][ny] == '.') {	// 비어있으면 물 확장
-					map[nx][ny] = '*';
-					water.add(nx);
-					water.add(ny);
-				}else if (map[nx][ny] == 'D') {	// 고슴도치 만나면 종료
-					return false;
+			// 2. 고슴도치 이동
+			len = animal.size();
+			for (int k = 0; k < len; k++) {
+				int[] a = animal.poll();
+				int x = a[0];
+				int y = a[1];
+				int cnt = a[2];
+				for (int i = 0; i < 4; i++) {
+					int nx = x + dx[i];
+					int ny = y + dy[i];
+					if (nx>=0 && ny>=0 && nx<r && ny<c) {
+						if (map[nx][ny] == '.') {			// 2-1. 비어 있을 때만 이동
+							animal.add(new int[] {nx, ny, cnt+1});
+							map[nx][ny] = 'S';
+						}else if (map[nx][ny] == 'D') {		// 2-2. 도착 시, while문 탈출
+							_min = Math.min(_min, cnt+1);
+							return;
+						}
+					}
 				}
 			}
 		}
-		return true;
 	}
-
 }
