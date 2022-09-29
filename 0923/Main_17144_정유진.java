@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-public class Main_17144_정유진 {
+public class Main {
 
 	static int R;
 	static int C;
