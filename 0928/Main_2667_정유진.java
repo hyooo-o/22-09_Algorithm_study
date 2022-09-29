@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
-public class Main_2667_정유진 {
+public class Main {
 
 	static int N;
 	static int[][] map;
