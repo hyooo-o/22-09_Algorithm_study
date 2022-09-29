@@ -1,6 +1,6 @@
 import java.util.Scanner;
  
-public class Solution_5215_정유진 {
+public class Solution {
  
     static int N, L;
     static int[] T;
