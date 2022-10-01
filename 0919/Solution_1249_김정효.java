@@ -55,10 +55,12 @@ public class Solution_1249_김정효 {
 			for (int k = 0; k < 4; k++) {
 				int nx = x + dx[k];
 				int ny = y + dy[k];
-				if (nx>=0 && ny>=0 && nx<n && ny<n && !visit[nx][ny]) {
-					visit[nx][ny] = true;
-					dp[nx][ny] = Math.min(dp[nx][ny], dp[x][y]+map[nx][ny]);
-					q.add(new int[] {nx, ny});
+				if (nx>=0 && ny>=0 && nx<n && ny<n) {
+					if (!visit[nx][ny] || dp[nx][ny] > dp[x][y]+map[nx][ny]) {	// 이 조건을 or로 생각하지 않아 오류가 났었다.
+						visit[nx][ny] = true;
+						dp[nx][ny] = dp[x][y]+map[nx][ny];
+						q.add(new int[] {nx, ny});
+					}
 				}
 			}
 			
